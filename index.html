@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101827" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Drinkr" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Drinkr</title>
+  <style>
+    :root { --bg:#101827; --card:#172033; --muted:#9aa6bd; --text:#f8fafc; --accent:#7c3aed; --accent2:#22c55e; --danger:#ef4444; --line:#263247; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin:0; min-height:100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: radial-gradient(circle at top, #263657 0%, var(--bg) 48%, #060913 100%); color:var(--text); padding: env(safe-area-inset-top) 18px env(safe-area-inset-bottom); }
+    .app { max-width:520px; margin:0 auto; padding:18px 0 30px; }
+    header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+    h1 { margin:0; font-size:34px; letter-spacing:-1px; }
+    .pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08); padding:8px 12px; border-radius:999px; color:var(--muted); font-size:13px; }
+    .card { background:rgba(23,32,51,.88); border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:18px; box-shadow:0 20px 60px rgba(0,0,0,.25); margin-bottom:16px; backdrop-filter: blur(10px); }
+    .mode { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    button { border:0; border-radius:18px; color:var(--text); font-weight:800; font-size:16px; padding:15px 14px; background:#263247; cursor:pointer; touch-action:manipulation; }
+    button.active { background:linear-gradient(135deg, var(--accent), #a855f7); }
+    .count { text-align:center; padding:20px 0 10px; }
+    .count .num { font-size:96px; line-height:.9; font-weight:900; letter-spacing:-5px; }
+    .count .label { color:var(--muted); margin-top:8px; }
+    .big { width:100%; font-size:22px; padding:22px; border-radius:24px; background:linear-gradient(135deg, var(--accent2), #16a34a); box-shadow:0 12px 26px rgba(34,197,94,.25); }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+    .ghost { background:rgba(255,255,255,.08); color:var(--text); }
+    .danger { background:rgba(239,68,68,.16); color:#fecaca; }
+    .drink-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+    .drink { display:flex; justify-content:space-between; align-items:center; background:#202b40; border-radius:16px; padding:12px; }
+    .drink span:last-child { color:var(--muted); }
+    input { width:100%; padding:15px; border-radius:16px; border:1px solid var(--line); background:#0f1726; color:var(--text); font-size:16px; outline:none; }
+    .hidden { display:none !important; }
+    .summary { display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:14px; }
+    .history-item { border-top:1px solid var(--line); padding:12px 0; color:var(--muted); }
+    .history-item strong { color:var(--text); }
+    .tiny { font-size:12px; color:var(--muted); line-height:1.45; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header><h1>Drinkr</h1><div class="pill" id="sessionState">Auto-saving</div></header>
+
+    <section class="card">
+      <div class="mode">
+        <button id="simpleBtn" class="active">Simple</button>
+        <button id="thirstyBtn">Thirsty</button>
+      </div>
+      <div class="count">
+        <div class="num" id="total">0</div>
+        <div class="label">drinks this session</div>
+      </div>
+      <button class="big" id="addSimple">+ Add Drink</button>
+      <div class="row">
+        <button class="ghost" id="undoBtn">Undo</button>
+        <button class="danger" id="resetBtn">Reset</button>
+      </div>
+    </section>
+
+    <section class="card hidden" id="thirstyPanel">
+      <strong>Add by drink type</strong>
+      <div class="drink-grid" id="drinkGrid"></div>
+      <div class="row">
+        <input id="customDrink" placeholder="Custom drink e.g. Guinness" />
+        <button id="addCustom">Add</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="summary"><span>Started</span><span id="startedAt">Now</span></div>
+      <button class="big" style="margin-top:14px;background:linear-gradient(135deg,#f59e0b,#ef4444)" id="finishBtn">Finish Session</button>
+      <p class="tiny">Drinkr is only a counting tool. It does not estimate blood alcohol level or guarantee safety. Please drink responsibly and never drink and drive.</p>
+    </section>
+
+    <section class="card">
+      <strong>History</strong>
+      <div id="history"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
